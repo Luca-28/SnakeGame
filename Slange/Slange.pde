@@ -6,33 +6,46 @@ boolean Left = false;
 boolean Down = false;
 boolean Right = true;
 
+PImage SnakeHead;  //Defines the sprites
+PImage SnakeEating;
 
-String[] Fruit = {"Apple","Cherry","Banana"};  //Sets up the fruit to collect
-int FruitX;
-int FruitY;
-int CollectedFruit = 0;
 
+String[] Food = {"Apple","Cherry","Banana","Strawberry"};  //Sets up the fruit to collect
+int FoodX;
+int FoodY;
+int CollectedFood = 0;
+int SelectedFood = (int)random(1,3);
+int Eating = 0;
+PImage Apple;
+PImage Cherry;
+PImage Banana;
 
 String GameMode = "Menu";
 String CurrentScreen = "Menu";
 
-
 float Timer = 0;
+
+
 void setup(){ 
   fullScreen();
   frameRate(30);
   rectMode(CENTER);
+  imageMode(CENTER);
   textAlign(CENTER);
   
-  SnakeX[0] = width/2;    //Sets up the snake at the starting position
+  SnakeX[0] = width/2;    //Sets up the snake
   SnakeY[0] = height/2;
   SnakeX[1] = 0;
   SnakeX[2] = 0;
   SnakeY[1] = 0;
   SnakeY[2] = 0;
   
-  FruitX = (int)random(10,width-10);  //Sets up the fruit
-  FruitY = (int)random(110,height-10);
+  SnakeHead = loadImage("SnakeHead.png");
+  SnakeEating = loadImage("SnakeEating.png");
+  
+  
+  FoodX = (int)random(10,width-10);  //Sets up the fruit
+  FoodY = (int)random(110,height-10);
 }
 
 void draw(){
@@ -103,29 +116,52 @@ void draw(){
       }
     }
     }
-    fill(50,200,50);
+    fill(50,150,50);
     for(int i = SnakeX.length-1; i > 0; i--){  //Draws the snake and makes the tail follow
       circle(SnakeX[i],SnakeY[i],25);
       
       SnakeX[i] = SnakeX[i-1];
       SnakeY[i] = SnakeY[i-1];
     }
-    circle(SnakeX[0],SnakeY[0],30);  //Draws the head of the snake
+    //Draws the head of the snake
+    pushMatrix();
+    translate(SnakeX[0],SnakeY[0]);
+    if(Up){
+      rotate(radians(180));
+    } else if(Left){
+      rotate(radians(90));
+    } else if(Down){
+      rotate(radians(0));
+    } else if(Right){
+      rotate(radians(270));
+    }
+    if(dist(SnakeX[0],SnakeY[0],FoodX,FoodY) < 80){
+      Eating = 2;
+    }
+    if(Eating > 0){
+      image(SnakeEating,0,0);
+      Eating--;
+    } else {
+      image(SnakeHead,0,0);
+    }
+    
+    popMatrix();
     
     fill(150);  //Draws The HUD
     rect(width/2,50,width,100);
     fill(255);
     textSize(50);
-    text("Fruits Collected: " + CollectedFruit,300,70);
+    text("Score: " + CollectedFood,300,70);
     text("Time Passed: " + int(Timer) + " Seconds",1300,70);
     Timer += 1/frameRate;
     
     fill(255);
-    circle(FruitX,FruitY,20);  //Draws the fruit
+    circle(FoodX,FoodY,20);  //Draws the fruit
     
-    if(SnakeX[0] > FruitX-30 && SnakeX[0] < FruitX+30  &&  SnakeY[0] > FruitY-30 && SnakeY[0] < FruitY+30){  //Checks if the snake eats fruit
-      CollectedFruit++;
-      println("Fruit Collected");
+    if(SnakeX[0] > FoodX-30 && SnakeX[0] < FoodX+30  &&  SnakeY[0] > FoodY-30 && SnakeY[0] < FoodY+30){  //Checks if the snake eats fruit
+      Eating = 5;
+      CollectedFood++;
+      println("Food Collected");
       int[] TempX = append(SnakeX,SnakeX[SnakeX.length-1]);
       SnakeX = TempX;
       
@@ -133,12 +169,12 @@ void draw(){
       SnakeY = TempY;
       
       for(int i = 0; i < 1; i++){
-        FruitX = int(random(10,width-10));
-        FruitY = int(random(110,height-10));
+        FoodX = int(random(10,width-10));
+        FoodY = int(random(110,height-10));
         for(int o = SnakeX.length; i > 0; o--){
-          if(FruitX > SnakeX[o]-30 && FruitX < SnakeX[o]+30  &&  FruitY > SnakeY[o]-30 && FruitY < SnakeY[o]+30){  //Makes sure the fruit doesn't spawn on the snake
+          if(FoodX > SnakeX[o]-30 && FoodX < SnakeX[o]+30  &&  FoodY > SnakeY[o]-30 && FoodY < SnakeY[o]+30){  //Makes sure the fruit doesn't spawn on the snake
             i--;
-            println("Available position for fruit not found. Retrying");
+            println("Available position for food not found. Retrying");
           }
         }
       }
@@ -154,7 +190,7 @@ void draw(){
     text("Back to Menu",width/2,823);
     
     textSize(40);
-    text("Fruit Collected: " + CollectedFruit,width/2,450);
+    text("Score: " + CollectedFood,width/2,450);
     text("Time Passed: " + int(Timer) + " Seconds",width/2,550);
     
     if(mousePressed){  //Checks if the player presses "Back to Menu"
@@ -164,18 +200,22 @@ void draw(){
         
         SnakeX[0] = width/2;
         SnakeY[0] = height/2;
-        CollectedFruit = 0;
+        CollectedFood = 0;
         Timer = 0;
+        
+        Up = false;
+        Left = false;
+        Down = false;
+        Right = true;
         
         int[] TempX = SnakeX;
         int[] TempY = SnakeY;
-        
+                
         for(int i = SnakeX.length; i > 3; i--){
           TempX = shorten(SnakeX);
           SnakeX = TempX;
           TempY = shorten(SnakeY);
           SnakeY = TempY;
-          
         }
       }
     }

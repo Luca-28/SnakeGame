@@ -147,7 +147,38 @@ void draw(){
     textSize(100);
     text("Game Over",width/2,300);
     
+    fill(150);
+    rect(width/2,800,500,100);
+    fill(255);
+    textSize(75);
+    text("Back to Menu",width/2,823);
     
+    textSize(40);
+    text("Fruit Collected: " + CollectedFruit,width/2,450);
+    text("Time Passed: " + int(Timer) + " Seconds",width/2,550);
+    
+    if(mousePressed){  //Checks if the player presses "Back to Menu"
+      if(mouseX > width/2-250 && mouseX < width/2+250  &&  mouseY > 750 && mouseY < 850){
+        CurrentScreen = "Menu"; //Returns player to menu and resets all base values
+        GameMode = "Menu";
+        
+        SnakeX[0] = width/2;
+        SnakeY[0] = height/2;
+        CollectedFruit = 0;
+        Timer = 0;
+        
+        int[] TempX = SnakeX;
+        int[] TempY = SnakeY;
+        
+        for(int i = SnakeX.length; i > 3; i--){
+          TempX = shorten(SnakeX);
+          SnakeX = TempX;
+          TempY = shorten(SnakeY);
+          SnakeY = TempY;
+          
+        }
+      }
+    }
   }
 }
 

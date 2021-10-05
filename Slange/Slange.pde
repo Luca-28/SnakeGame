@@ -10,15 +10,17 @@ PImage SnakeHead;  //Defines the sprites
 PImage SnakeEating;
 
 
-String[] Food = {"Apple","Cherry","Banana","Strawberry"};  //Sets up the fruit to collect
+String[] Food = {"Apple","Cherry","Banana","Strawberry","Mouse",};  //Sets up the fruit to collect
 int FoodX;
 int FoodY;
 int CollectedFood = 0;
-int SelectedFood = (int)random(1,3);
+int SelectedFood = (int)random(0,5);
 int Eating = 0;
 PImage Apple;
 PImage Cherry;
 PImage Banana;
+PImage Strawberry;
+PImage Mouse;
 
 String GameMode = "Menu";
 String CurrentScreen = "Menu";
@@ -32,7 +34,7 @@ void setup(){
   rectMode(CENTER);
   imageMode(CENTER);
   textAlign(CENTER);
-  
+  noStroke();
   SnakeX[0] = width/2;    //Sets up the snake
   SnakeY[0] = height/2;
   SnakeX[1] = 0;
@@ -46,14 +48,20 @@ void setup(){
   
   FoodX = (int)random(10,width-10);  //Sets up the fruit
   FoodY = (int)random(110,height-10);
+  
+  Apple = loadImage("Apple.png");
+  Cherry = loadImage("Cherry.png");
+  Banana = loadImage("Banana.png");
+  Strawberry = loadImage("Strawberry.png");
+  Mouse = loadImage("Mouse.png");
 }
 
 void draw(){
   clear();
-  background(50);
+  background(120,150,30);
   if(CurrentScreen == "Menu"){  //Draws the gamemode selection menu
-  
-  textSize(30);
+    background(50);
+    textSize(30);
   
   fill(200);
   rect(width/3,height/2,300,300);  //Draws the selection boxes
@@ -116,9 +124,9 @@ void draw(){
       }
     }
     }
-    fill(50,150,50);
+    fill(76,134,43);
     for(int i = SnakeX.length-1; i > 0; i--){  //Draws the snake and makes the tail follow
-      circle(SnakeX[i],SnakeY[i],25);
+      circle(SnakeX[i],SnakeY[i],40);
       
       SnakeX[i] = SnakeX[i-1];
       SnakeY[i] = SnakeY[i-1];
@@ -155,12 +163,25 @@ void draw(){
     text("Time Passed: " + int(Timer) + " Seconds",1300,70);
     Timer += 1/frameRate;
     
-    fill(255);
-    circle(FoodX,FoodY,20);  //Draws the fruit
+    //Draws the fruit
+    if(SelectedFood == 0){
+      image(Mouse,FoodX,FoodY);
+    } else if(SelectedFood == 1){
+      image(Apple,FoodX,FoodY);
+    } else if(SelectedFood == 2){
+      image(Cherry,FoodX,FoodY);
+    } else if(SelectedFood == 3){
+      image(Strawberry,FoodX,FoodY);
+    } else if(SelectedFood == 4){
+      image(Banana,FoodX,FoodY);
+    } else {
+      circle(FoodX,FoodY,25);
+    }
     
     if(SnakeX[0] > FoodX-30 && SnakeX[0] < FoodX+30  &&  SnakeY[0] > FoodY-30 && SnakeY[0] < FoodY+30){  //Checks if the snake eats fruit
       Eating = 5;
       CollectedFood++;
+      SelectedFood = (int)random(0,5);
       println("Food Collected");
       int[] TempX = append(SnakeX,SnakeX[SnakeX.length-1]);
       SnakeX = TempX;

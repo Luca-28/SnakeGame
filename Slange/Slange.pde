@@ -201,6 +201,7 @@ void draw(){
       }
     }
   } else if(CurrentScreen == "Game Over"){  //Draws the Game Over screen
+    background(50);
     textSize(100);
     text("Game Over",width/2,300);
     
@@ -245,25 +246,25 @@ void draw(){
 
 void keyPressed(){  //Changes the snake direction
 if(CurrentScreen == "Game"){
-   if(key == 'w' && Down == false){
+   if(key == 'w' && Down == false || key == 'W' && Down == false){
      Up = true;
      Left = false;
      Down = false;
      Right = false;
    }
-   if(key == 'a' && Right == false){
+   if(key == 'a' && Right == false || key == 'A' && Right == false){
      Up = false;
      Left = true;
      Down = false;
      Right = false;
    }
-   if(key == 's' && Up == false){
+   if(key == 's' && Up == false || key == 'S' && Up == false){
      Up = false;
      Left = false;
      Down = true;
      Right = false;
    }
-   if(key == 'd' && Left == false){
+   if(key == 'd' && Left == false || key == 'D' && Left == false){
      Up = false;
      Left = false;
      Down = false;

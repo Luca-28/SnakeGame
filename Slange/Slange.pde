@@ -25,6 +25,10 @@ PImage Mouse;
 String GameMode = "Menu";
 String CurrentScreen = "Menu";
 
+PImage NormalMode;
+PImage InfiniteMode;
+
+
 float Timer = 0;
 
 
@@ -54,6 +58,9 @@ void setup(){
   Banana = loadImage("Banana.png");
   Strawberry = loadImage("Strawberry.png");
   Mouse = loadImage("Mouse.png");
+  
+  NormalMode = loadImage("NormalMode.png");
+  InfiniteMode = loadImage("InfiniteMode.png");
 }
 
 void draw(){
@@ -64,18 +71,18 @@ void draw(){
     textSize(30);
   
   fill(200);
-  rect(width/3,height/2,300,300);  //Draws the selection boxes
+  image(NormalMode,width/3,height/2);  //Draws the selection boxes
   fill(150);
-  rect(width/3,height/2-100,300,100);
+  rect(width/3,height/2-200,300,100);
   fill(255);
-  text("Normal Mode",width/3,height/2-100);
+  text("Normal Mode",width/3,height/2-200);
     
   fill(200);
-  rect(width-width/3,height/2,300,300);
+  image(InfiniteMode,width-width/3,height/2);
   fill(150);
-  rect(width-width/3,height/2-100,300,100);
+  rect(width-width/3,height/2-200,300,100);
   fill(255);
-  text("Infinite Mode",width-width/3,height/2-100);
+  text("Infinite Mode",width-width/3,height/2-200);
   
   
   if(mousePressed){  //Checks the clicked box

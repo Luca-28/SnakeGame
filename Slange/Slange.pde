@@ -202,12 +202,6 @@ void draw(){
       for(int i = 0; i < 1; i++){
         FoodX = int(random(10,width-10));
         FoodY = int(random(110,height-10));
-        for(int o = SnakeX.length; i > 0; o--){
-          if(FoodX > SnakeX[o]-30 && FoodX < SnakeX[o]+30  &&  FoodY > SnakeY[o]-30 && FoodY < SnakeY[o]+30){  //Makes sure the fruit doesn't spawn on the snake
-            i--;
-            println("Available position for food not found. Retrying");
-          }
-        }
       }
     }
   } else if(CurrentScreen == "Game Over" || CurrentScreen == "Game Ended"){  //Draws the Results screen

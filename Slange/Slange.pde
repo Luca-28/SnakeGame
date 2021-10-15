@@ -31,7 +31,6 @@ PImage InfiniteMode;
 
 float Timer = 0;
 
-
 void setup(){ 
   fullScreen();
   frameRate(30);
@@ -61,6 +60,7 @@ void setup(){
   
   NormalMode = loadImage("NormalMode.png");
   InfiniteMode = loadImage("InfiniteMode.png");
+  
 }
 
 void draw(){
@@ -165,9 +165,12 @@ void draw(){
     fill(150);  //Draws The HUD
     rect(width/2,50,width,100);
     fill(255);
+    textSize(20);
+    text("Press ENTER To Quit",200,40);
+    text("WASD To Move",200,80);
     textSize(50);
-    text("Score: " + CollectedFood,300,70);
-    text("Time Passed: " + int(Timer) + " Seconds",1300,70);
+    text("Score: " + CollectedFood,width/2,70);
+    text("Time Passed: " + int(Timer) + " Seconds",1500,70);
     Timer += 1/frameRate;
     
     //Draws the fruit
@@ -207,10 +210,10 @@ void draw(){
         }
       }
     }
-  } else if(CurrentScreen == "Game Over"){  //Draws the Game Over screen
+  } else if(CurrentScreen == "Game Over" || CurrentScreen == "Game Ended"){  //Draws the Results screen
     background(50);
     textSize(100);
-    text("Game Over",width/2,300);
+    text(CurrentScreen,width/2,300);
     
     fill(150);
     rect(width/2,800,500,100);
@@ -221,6 +224,7 @@ void draw(){
     textSize(40);
     text("Score: " + CollectedFood,width/2,450);
     text("Time Passed: " + int(Timer) + " Seconds",width/2,550);
+    
     
     if(mousePressed){  //Checks if the player presses "Back to Menu"
       if(mouseX > width/2-250 && mouseX < width/2+250  &&  mouseY > 750 && mouseY < 850){
@@ -276,6 +280,9 @@ if(CurrentScreen == "Game"){
      Left = false;
      Down = false;
      Right = true;
+   }
+   if(keyCode == ENTER){
+    CurrentScreen = "Game Ended"; 
    }
   }
 }
